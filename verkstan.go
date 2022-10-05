@@ -3,29 +3,32 @@ package main
 // Import OS and fmt packages
 import (
 	"fmt"
-	"os"
     "math/rand"
     "time"
 )
 
-type Worker struct {
-    Name string
+type three struct {
+    Jk string
+    MbAbAg string
+    KuGlFb string
 }
 
-type Three struct {
-    Jk Worker
-    MbAbAg Worker
-    KuGlFb Worker
+type four struct {
+    Jk string
+    MbAbAg string
+    Ku string
+    GlFb string
 }
 
-type Four struct {
-    Jk Worker
-    MbAbAg Worker
-    Ku Worker
-    GlFb Worker
+func newThree(names[]string) *three {
+    shift := three{}
+    shift.Jk = names[0]
+    shift.MbAbAg = names[1]
+    shift.KuGlFb = names[2]
+
+    fmt.Println(shift)
+    return &shift
 }
-
-
 
 // The main function for making a schedule for verkstan
 func name_scan(numPers int) []string {
@@ -69,10 +72,11 @@ func main() {
 
     names := name_scan(numPers)
 
-    fmt.Println(names)
     shuffle_names(names)
-    fmt.Println(names)
 
+    if len(names) == 3 {
+        FM := newThree(names)
+        fmt.Println(FM)
 
-    fmt.Println(os.Getenv("USER"), ", Let's be friends!") // Read Linux $USER environment variable 
+    }
 }
