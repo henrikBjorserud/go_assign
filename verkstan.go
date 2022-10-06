@@ -30,6 +30,16 @@ func newThree(names[]string) *three {
     return &shift
 }
 
+func newFour(names[]string) *four {
+    shift := four{}
+    shift.Jk = names[0]
+    shift.MbAbAg = names[1]
+    shift.Ku = names[2]
+    shift.GlFb = names[3]
+
+    fmt.Println(shift)
+    return &shift
+}
 // The main function for making a schedule for verkstan
 func name_scan(numPers int) []string {
 
@@ -55,17 +65,6 @@ func shuffle_names(names []string) []string {
 
 func main() {
 
-    three := make(map[string]string)
-    three["JK"] = ""
-    three["MB_AB_AG"] = ""
-    three["KU_GL_FB"] = ""
-
-    four := make(map[string]string)
-    four["JK"] = ""
-    four["MB_AB_AG"] = ""
-    four["KU"] = ""
-    four["GL_FB"] = ""
-
     fmt.Println("Hur många personal vill du fördela, 3 eller 4?")  // Print simple text on screen
     var numPers int
     fmt.Scanln(&numPers)
@@ -76,7 +75,13 @@ func main() {
 
     if len(names) == 3 {
         FM := newThree(names)
-        fmt.Println(FM)
+        fmt.Printf("%+v", FM)
+
+
+    if len(names) == 4 {
+        FM := newFour(names)
+        fmt.Printf("%+v", FM)
+
 
     }
 }
