@@ -1,31 +1,52 @@
 package main
 
-// Import OS and fmt packages
+// Import random, time (to improve pseudo-random) and fmt packages
 import (
 	"fmt"
-	"os"
     "math/rand"
     "time"
 )
-
-type Worker struct {
-    Name string
+// The struct that is used to create a schedule for three worrkers
+type three struct {
+    Jk string
+    MbAbAg string
+    KuGlFb string
+}
+// The struct that is used to create a schedule for four workers
+type four struct {
+    Jk string
+    MbAbAg string
+    Ku string
+    GlFb string
+}
+// Rotate names
+func rotate_names(names []string) []string {
+    var newdata []string
+    first := names[:1]
+    newdata = append(newdata,names[1:]...)
+    newdata = append(newdata,first...)
+    return newdata
 }
 
-type Three struct {
-    Jk Worker
-    MbAbAg Worker
-    KuGlFb Worker
+// Assign names to three empty slots
+func newThree(names[]string) *three {
+    shift := three{}
+    shift.Jk = names[0]
+    shift.MbAbAg = names[1]
+    shift.KuGlFb = names[2]
+
+    return &shift
 }
+// Assign names to four empty slots
+func newFour(names[]string) *four {
+    shift := four{}
+    shift.Jk = names[0]
+    shift.MbAbAg = names[1]
+    shift.Ku = names[2]
+    shift.GlFb = names[3]
 
-type Four struct {
-    Jk Worker
-    MbAbAg Worker
-    Ku Worker
-    GlFb Worker
+    return &shift
 }
-
-
 
 // The main function for making a schedule for verkstan
 func name_scan(numPers int) []string {
@@ -33,7 +54,6 @@ func name_scan(numPers int) []string {
      names := make([]string, numPers)
 
     for i := 0; i < numPers;{
-        fmt.Println(i)
         fmt.Println("Skriv ett namn och tryck enter: ")
         var name string
         fmt.Scanln(&name)
@@ -43,6 +63,7 @@ func name_scan(numPers int) []string {
         return names
 }
 
+// Put names in random order
 func shuffle_names(names []string) []string {
     rand.Seed(time.Now().UnixNano())
     rand.Shuffle(len(names), func(i, j int) {names[i], names[j] = names[j], names[i]})
@@ -51,28 +72,37 @@ func shuffle_names(names []string) []string {
 }
 
 func main() {
-
-    three := make(map[string]string)
-    three["JK"] = ""
-    three["MB_AB_AG"] = ""
-    three["KU_GL_FB"] = ""
-
-    four := make(map[string]string)
-    four["JK"] = ""
-    four["MB_AB_AG"] = ""
-    four["KU"] = ""
-    four["GL_FB"] = ""
-
-    fmt.Println("Hur många personal vill du fördela, 3 eller 4?")  // Print simple text on screen
+    // Ask for number of people working
+    fmt.Println("Hur många personal vill du fördela, 3 eller 4?")
     var numPers int
     fmt.Scanln(&numPers)
-
+    // Collect names of workers
     names := name_scan(numPers)
-
-    fmt.Println(names)
+    // Randomize names
     shuffle_names(names)
-    fmt.Println(names)
+    if len(names) == 3 {
+        // Assign three workers before lunch
+        FM := newThree(names)
+        fmt.Println("Before Lunch:")
+        fmt.Printf("%+v", FM)
+        // Rotate names and assign after lunch
+        rotated_names := rotate_names(names)
+        fmt.Println("\nAfter Lunch")
+        EM := newThree(rotated_names)
+        fmt.Printf("%+v", EM)
+        fmt.Println("\n")
+    }
 
-
-    fmt.Println(os.Getenv("USER"), ", Let's be friends!") // Read Linux $USER environment variable 
+    if len(names) == 4 {
+        // Assign four workers before lunch
+        FM := newFour(names)
+        fmt.Println("Before Lunch:")
+        fmt.Printf("%+v", FM)
+        // Rotate names and assign after lunch
+        rotated_names := rotate_names(names)
+        EM := newFour(rotated_names)
+        fmt.Println("\nAfter Lunch:")
+        fmt.Printf("%+v", EM)
+        fmt.Println("\n")
+    }
 }
