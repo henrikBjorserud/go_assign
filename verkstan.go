@@ -1,6 +1,6 @@
 package main
 
-// Import OS and fmt packages
+// Import random, time (to improve pseudo-random) and fmt packages
 import (
 	"fmt"
     "math/rand"
@@ -62,6 +62,7 @@ func name_scan(numPers int) []string {
     }
         return names
 }
+
 // Put names in random order
 func shuffle_names(names []string) []string {
     rand.Seed(time.Now().UnixNano())
@@ -71,19 +72,20 @@ func shuffle_names(names []string) []string {
 }
 
 func main() {
-
-    fmt.Println("Hur många personal vill du fördela, 3 eller 4?")  // Print simple text on screen
+    // Ask for number of people working
+    fmt.Println("Hur många personal vill du fördela, 3 eller 4?")
     var numPers int
     fmt.Scanln(&numPers)
-
+    // Collect names of workers
     names := name_scan(numPers)
-
+    // Randomize names
     shuffle_names(names)
-
     if len(names) == 3 {
+        // Assign three workers before lunch
         FM := newThree(names)
         fmt.Println("Before Lunch:")
         fmt.Printf("%+v", FM)
+        // Rotate names and assign after lunch
         rotated_names := rotate_names(names)
         fmt.Println("\nAfter Lunch")
         EM := newThree(rotated_names)
@@ -92,9 +94,11 @@ func main() {
     }
 
     if len(names) == 4 {
+        // Assign four workers before lunch
         FM := newFour(names)
         fmt.Println("Before Lunch:")
         fmt.Printf("%+v", FM)
+        // Rotate names and assign after lunch
         rotated_names := rotate_names(names)
         EM := newFour(rotated_names)
         fmt.Println("\nAfter Lunch:")
